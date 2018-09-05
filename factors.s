@@ -18,19 +18,20 @@ print:
     push {lr}
 
     ldr r0, =formatOut
-    mov r1, r4
+    mov r1, r4 /* Moved into r1 to allow printf to take it as a parameter */
     bl printf
 
     pop {pc}
 
 loop:
     push {lr}
-
-    loopStart:
+    
+    mov r4, #1 /* Move counter into reserved register */
     ldr r5, =number
     ldr r5, [r5] /* Load number into r5 */
     
-    cmp r4, r5
+    loopStart:    
+    cmp r4, r5 /* Compare number to i, acts as loop end condition */
     bgt endLoop
 
     udiv r1, r5, r4 /* Find quotient of number / i, r1 = r5 / r4 */
@@ -56,7 +57,6 @@ main:
     ldr r1, =number /* Set pointer */
     bl scanf /* Read in an int */
 
-    mov r4, #1 /* Move counter into reserved register */
     bl loop    
 
     mov r0, #0 /* Return 0 */
