@@ -60,4 +60,4 @@ main:
     bl loop    
 
     mov r0, #0 /* Return 0 */
-    pop  {pc} /* Pop return address onto program counter */
+    pop {pc} /* Pop return address onto program counter */
