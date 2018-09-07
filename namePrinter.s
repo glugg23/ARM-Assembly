@@ -8,6 +8,9 @@ inputLastName:
 print:
     .asciz "Hello %s!\n"
 
+space:
+    .asciz " "
+
 firstName:
     .skip 128 /* char[128] */
 
@@ -33,8 +36,29 @@ main:
     bl fgets
     /* Remove new line after this */ 
 
-    ldr r0, =print
+    ldr r0, =inputLastName
+    bl printf
+
+    ldr r0, =lastName
+    mov r1, #128
+    ldr r2, =stdin
+    ldr r2, [r2]
+    bl fgets
+
+    ldr r0, =fullName
     ldr r1, =firstName
+    bl strcpy
+
+    ldr r0, =fullName
+    ldr r1, =space
+    bl strcat
+
+    ldr r0, =fullName
+    ldr r1, =lastName
+    bl strcat
+
+    ldr r0, =print
+    ldr r1, =fullName
     bl printf
 
     pop {pc}
