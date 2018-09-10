@@ -12,7 +12,7 @@ space:
     .asciz " "
 
 firstName:
-    .skip 128 /* char[128] */
+    .skip 128 @char[128]
 
 lastName:
     .skip 128
@@ -37,12 +37,12 @@ main:
 
     ldr r0, =firstName
     bl strlen
-    mov r4, r0 /* Store result of strlen */
-    sub r4, r4, #1 /* Find last index/length after new line is removed */
+    mov r4, r0 @Store result of strlen
+    sub r4, r4, #1 @Find last index/length after new line is removed
 
-    mov r0, #0x00 /* '\0' */
+    mov r0, #0x00 @'\0'
     ldr r1, =firstName
-    str r0, [r1, r4] /* firstName[strlen(firstName)-1] = '\0' */
+    str r0, [r1, r4] @firstName[strlen(firstName)-1] = '\0'
 
     ldr r0, =inputLastName
     bl printf
