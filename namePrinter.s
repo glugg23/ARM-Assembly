@@ -34,7 +34,15 @@ main:
     ldr r2, =stdin
     ldr r2, [r2]
     bl fgets
-    /* Remove new line after this */ 
+
+    ldr r0, =firstName
+    bl strlen
+    mov r4, r0 /* Store result of strlen */
+    sub r4, r4, #1 /* Find last index/length after new line is removed */
+
+    mov r0, #0x00 /* '\0' */
+    ldr r1, =firstName
+    str r0, [r1, r4] /* firstName[strlen(firstName)-1] = '\0' */
 
     ldr r0, =inputLastName
     bl printf
@@ -44,6 +52,15 @@ main:
     ldr r2, =stdin
     ldr r2, [r2]
     bl fgets
+
+    ldr r0, =lastName
+    bl strlen
+    mov r4, r0
+    sub r4, r4, #1
+
+    mov r0, #0x00
+    ldr r1, =lastName
+    str r0, [r1, r4]
 
     ldr r0, =fullName
     ldr r1, =firstName
