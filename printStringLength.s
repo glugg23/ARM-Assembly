@@ -24,11 +24,16 @@ main:
 
     ldr r0, =string
     bl strlen
-    push {r0} /* Push the value from strlen onto the stack */
+    mov r4, r0 /* Store result of strlen in a non volatile register */
+    sub r4, r4, #1 /* Remove one from length to allow getting rid of new line */
+    
+    mov r0, #0x00 /* Move null terminator to r0 */
+    ldr r1, =string
+    str r0, [r1, r4] /* string[r4] = '\0' */
 
     ldr r0, =print
     ldr r1, =string
-    pop {r2}
+    mov r2, r4
     bl printf
 
     pop {pc}
