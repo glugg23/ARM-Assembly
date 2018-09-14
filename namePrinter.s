@@ -78,4 +78,5 @@ main:
     ldr r1, =fullName
     bl printf
 
+    mov r0, #0
     pop {pc}

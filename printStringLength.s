@@ -36,4 +36,5 @@ main:
     mov r2, r4
     bl printf
 
+    mov r0, #0 
     pop {pc}
