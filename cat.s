@@ -42,6 +42,14 @@ main:
 
     mov r4, r0 @save the pointer to filename
 
+    ldr r0, =line
+    mov r1, #512
+    mov r2, r4
+    bl fgets
+
+    ldr r0, =line
+    bl printf
+
     mov r0, r4
     bl fclose
 
