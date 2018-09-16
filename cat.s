@@ -48,9 +48,7 @@ main:
     mov r2, r4
     bl fgets
 
-    @ldr r0, =line
-    @It should work with this line but it doesn't
-    cmp r0, #0
+    cmp r0, #0 @Check return value of fgets
     beq end
 
     ldr r0, =line
