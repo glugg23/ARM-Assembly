@@ -42,14 +42,22 @@ main:
 
     mov r4, r0 @save the pointer to filename
 
+    loop:
     ldr r0, =line
     mov r1, #512
     mov r2, r4
     bl fgets
 
+    @ldr r0, =line
+    @It should work with this line but it doesn't
+    cmp r0, #0
+    beq end
+
     ldr r0, =line
     bl printf
+    b loop 
 
+    end:
     mov r0, r4
     bl fclose
 
