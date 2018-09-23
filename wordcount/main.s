@@ -11,10 +11,11 @@ print: .asciz "%p: %s\n"
 
 commandFlags:
     push {fp, lr} @Save frame pointer and lr
-    add r11, sp, #0 @Set bottom of stack frame
+    add fp, sp, #0 @Set bottom of stack frame
     sub sp, sp, #16 @Allocate some buffer on stack
 
-    @TODO: Rewrite this using stack?
+    push {r4, r5, r6} @Save the existing values to ensure we can reset program state
+
     mov r4, r1 @Save argv
     mov r5, r0 @Save argc
     mov r6, #0 @i = 0
@@ -44,7 +45,9 @@ commandFlags:
         b loop
 
     end:
-    sub sp, r11, #0 @Readjust stack pointer
+    pop {r4, r5, r6} @Reset program state
+
+    sub sp, fp, #0 @Readjust stack pointer
     pop {fp, pc} @Restore frame pointer and pop lr into pc to go back to main
 
 main:
