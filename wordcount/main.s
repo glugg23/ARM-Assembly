@@ -25,10 +25,20 @@ commandFlags:
     
         mov r3, #4
         mul r3, r6, r3 @Offset for argv
+        push {r3} @Call to strcmp clears r3 so save this value
+                
+        ldr r0, =input
+        ldr r1, [r4, r3] @argv[i]
+        bl strcmp @argv[i] == "-i"
 
-        ldr r0, =inputFilename @Load r0 with pointer to filename
-        ldr r1, [r4, r3] @Load r1 with argv[i]
-        str r1, [r0] @Store the value of r1 at *r0
+        cmp r0, #0 @If they are equal
+        pop {r3}
+        add r3, r3, #4 @Increment offset to get next value of argv
+        
+        @Conditionally execute next instructions to save a branch instruction
+        ldreq r0, =inputFilename @Load r0 with pointer to filename
+        ldreq r1, [r4, r3] @Load r1 with argv[i]
+        streq r1, [r0] @Store the value of r1 at *r0
 
         add r6, r6, #1 @i++
         b loop
