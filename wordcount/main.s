@@ -4,7 +4,7 @@ output: .asciz "-o"
 inputFilename: .skip 4 @char*
 outputFilename: .skip 4 @char*
 
-print: .asciz "%p: %s\n"
+print: .asciz "-i: %s\n-o: %s\n"
 
 .text
 .global main
@@ -24,7 +24,8 @@ commandFlags:
     loop:
         cmp r6, r5 @If i >= argc
         bge end @End loop
-    
+        
+        @Find input file
         ldr r0, =input
         ldr r1, [r4, r7] @argv[i]
         bl strcmp @argv[i] == "-i"
@@ -36,6 +37,18 @@ commandFlags:
         ldreq r0, =inputFilename @Load r0 with pointer to filename
         ldreq r1, [r4, r3] @Load r1 with argv[i + 1]
         streq r1, [r0] @Store the value of r1 at *r0
+        
+        @Find output file
+        ldr r0, =output
+        ldr r1, [r4, r7] @argv[i]
+        bl strcmp @argv[i] == "-o"
+
+        cmp r0, #0 @If equal
+
+        addeq r3, r7, #4 @Increase offset
+        ldreq r0, =outputFilename
+        ldreq r1, [r4, r3] @argv[i + 1]
+        streq r1, [r0] @outputFilename = argv[i + 1]
         
         add r6, r6, #1 @i++
         add r7, r7, #4 @Increase offset by 4 bytes
@@ -52,7 +65,9 @@ main:
 
     ldr r0, =print
     ldr r1, =inputFilename
-    ldr r2, [r1]
+    ldr r1, [r1]
+    ldr r2, =outputFilename
+    ldr r2, [r2]
     bl printf
 
     mov r0, #0 @return 0
