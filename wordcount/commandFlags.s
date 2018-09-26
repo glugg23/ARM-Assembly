@@ -1,8 +1,8 @@
 .data
 input: .asciz "-i"
 output: .asciz "-o"
-inputFilename: .skip 4 @char*
-outputFilename: .skip 4 @char*
+inputFilename: .skip 4, 0x0 @char*
+outputFilename: .skip 4, 0x0 @char*
 
 .text
 commandFlags:
