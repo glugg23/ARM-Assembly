@@ -3,6 +3,8 @@ print: .asciz "-i: %s\n-o: %s\n"
 read: .asciz "r"
 write: .asciz "w"
 
+buffer: .skip 500
+
 .text
 .include "commandFlags.s"
 .global main
@@ -17,15 +19,27 @@ main:
     bl printf
 
     ldr r0, =inputFilename
+    ldr r0, [r0]
     mov r1, #0x0
     cmp r0, r1 @Check if a filename was found
 
-    ldreq r4, =stdin
-    ldreq r4, [r4] @If no filename was found load stdin
-
+    ldr r0, =stdin
+    ldr r0, [r0] @Always move something into r0
+    
+    ldrne r0, =inputFilename
+    ldrne r0, [r0]
     ldrne r1, =read
-    blne fopen @Otherwise call fopen
-    movne r1, r4 @And save the FILE*
+    blne fopen @If there is one open it up
+
+    mov r4, r0 @Move either the file name or stdin into r4
+
+    ldr r0, =buffer
+    mov r1, #500
+    mov r2, r4
+    bl fgets
+
+    ldr r0, =buffer
+    bl puts
 
     mov r0, #0 @return 0
     mov r7, #1 @exit is syscall 1
