@@ -32,6 +32,21 @@ main:
     blne fopen @If there is one open it up
 
     mov r4, r0 @Move either the file name or stdin into r4
+    
+    ldr r0, =outputFilename
+    ldr r0, [r0]
+    mov r1, #0x0
+    cmp r0, r1 @Check if there is an output file
+
+    ldr r0, =stdout
+    ldr r0, [r0] @Always load something into r0
+
+    ldrne r0, =outputFilename
+    ldrne r0, [r0]
+    ldrne r1, =write
+    blne fopen @Open output file
+
+    mov r5, r0 @Save this value
 
     ldr r0, =buffer
     mov r1, #500
@@ -40,6 +55,12 @@ main:
 
     ldr r0, =buffer
     bl puts
+
+    mov r0, r4
+    bl fclose @Close input file
+
+    mov r0, r5
+    bl fclose @Close output file
 
     mov r0, #0 @return 0
     mov r7, #1 @exit is syscall 1
