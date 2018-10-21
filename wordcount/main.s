@@ -3,8 +3,6 @@ print: .asciz "-i: %s\n-o: %s\n"
 read: .asciz "r"
 write: .asciz "w"
 
-buffer: .skip 500
-
 .text
 .include "commandFlags.s"
 .include "array.s"
@@ -56,7 +54,7 @@ main:
     
     
     mov r0, r6
-    bl freeArray    
+    bl freeArray @Free struct and array
 
     mov r0, r4
     bl fclose @Close input file
