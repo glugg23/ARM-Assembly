@@ -14,6 +14,7 @@ struct Word {
 sizeof(Word) = 8 bytes
 */
 
+.cpu cortex-a53
 .text
 
 @input: int size for memory allocation
