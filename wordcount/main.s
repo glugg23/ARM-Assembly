@@ -51,6 +51,12 @@ main:
 
     mov r0, #256 @Array size
     bl createArray
+    mov r6, r0 @Save allocated array
+
+    
+    
+    mov r0, r6
+    bl freeArray    
 
     mov r0, r4
     bl fclose @Close input file
