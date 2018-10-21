@@ -52,6 +52,41 @@ createArray:
     pop {fp, pc} @Restore frame pointer and pop lr into pc
 
 
+@TODO Test this function
+@input: WordArray and a Word to be inserted into it
+insertArray:
+    push {fp, lr} @Save frame pointer and lr
+    add fp, sp, #0 @Set bottom of stack frame
+    sub sp, sp, #16 @Allocate some buffer on stack
+
+    push {r4, r5}
+
+    mov r4, r0 @Save WordArray
+    mov r5, r1 @Save Word
+
+    ldr r0, [r4, #4] @Load used
+    ldr r1, [r4, #8] @Load size
+    cmp r0, r1 @Check if they are equal
+
+    moveq r2, #2
+    muleq r1, r1, r2
+    streq r1, [r4, #8] @Increase size by 2
+
+    moveq r2, #8 @Size of Word
+    muleq r1, r1, r2 @Work out bytes to allocate
+    ldreq r0, [r4] @Load array into r0
+    bleq realloc @Call realloc
+
+    ldr r0, [r4] @Load array
+    ldr r1, [r4, #4] @Store index to insert at
+    str r5, [r0, r1] @Store Word at WordArray[r1]
+
+    pop {r4, r5}
+
+    sub sp, fp, #0 @Readjust stack pointer
+    pop {fp, pc} @Restore frame pointer and pop lr into pc
+
+
 @input: WordArray to be destroyed
 freeArray:
     push {fp, lr} @Save frame pointer and lr
