@@ -6,6 +6,12 @@ struct WordArray {
     int totalWords
 }
 sizeof(WordArray) = 16 bytes
+
+struct Word {
+    char* word
+    int count
+}
+sizeof(Word) = 8 bytes
 */
 
 .text
@@ -27,7 +33,8 @@ createArray:
     mov r5, r0 @Save this bit of memory
    
     mov r0, r4
-    @TODO: Multiply by size of Word struct
+    mov r1, #8
+    mul r0, r0, r1 @sizeof(Word) * size of array
     bl malloc @Allocate memory for array
     str r0, [r5] @Store this at &struct+0
 
