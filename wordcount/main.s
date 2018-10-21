@@ -7,6 +7,7 @@ buffer: .skip 500
 
 .text
 .include "commandFlags.s"
+.include "array.s"
 .global main
 main:
     bl commandFlags
@@ -48,13 +49,8 @@ main:
 
     mov r5, r0 @Save this value
 
-    ldr r0, =buffer
-    mov r1, #500
-    mov r2, r4
-    bl fgets
-
-    ldr r0, =buffer
-    bl puts
+    mov r0, #256 @Array size
+    bl createArray
 
     mov r0, r4
     bl fclose @Close input file
