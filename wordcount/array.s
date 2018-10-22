@@ -80,7 +80,14 @@ insertArray:
 
     ldr r0, [r4] @Load array
     ldr r1, [r4, #4] @Store index to insert at
-    str r5, [r0, r1] @Store Word at WordArray[r1]
+
+    mov r2, #8
+    mul r2, r1, r2 @Calculate byte offset
+
+    str r5, [r0, r2] @Store Word at WordArray[i]
+    
+    add r1, r1, #1 @Increase used number by 1
+    str r1, [r4, #4] @Store this value back again
 
     pop {r4, r5}
 
