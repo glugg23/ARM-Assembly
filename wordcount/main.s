@@ -6,6 +6,7 @@ write: .asciz "w"
 .text
 .include "commandFlags.s"
 .include "array.s"
+.include "split.s"
 .global main
 main:
     bl commandFlags
@@ -51,7 +52,9 @@ main:
     bl createArray
     mov r6, r0 @Save allocated array
 
-    
+    mov r0, r4 @Pass input file to function
+    mov r1, r6 @Pass array to function
+    bl splitString    
     
     mov r0, r6
     bl freeArray @Free struct and array
